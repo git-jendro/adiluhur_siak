@@ -97,7 +97,7 @@ class DidikController extends DashboardBaseController
     public function siswa($kelas){
         $s = Siswa::where('kd_kelas', $kelas)->get();
  
-        return response()->json($s);
+        return response()->json($siswa);
     }
 
 }

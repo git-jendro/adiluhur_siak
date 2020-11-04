@@ -37,4 +37,10 @@ class Walikelas extends Model
     {
         return $this->belongsTo('App\TahunAkademik', 'id_tahun_akademik', 'id_tahun_akademik');
     }
+    
+    public function siswa()
+    {
+        return $this->hasMany('App\Siswa');
+    }
+    
 }

@@ -26,7 +26,7 @@ class Guru extends Model
     }
 
     public function walikelas(){
-        return $this->belongsTo('App\Walikelas', 'id_walikelas', 'id_walikelas');
+        return $this->hasMany('App\Walikelas');
     }
     
 }

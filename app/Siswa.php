@@ -34,4 +34,9 @@ class Siswa extends Model
     {
         return $this->hasMany('App\Nilai');
     }
+
+    public function Walikelas()
+    {
+        return $this->belongsTo('App\Walikelas', 'id_walikelas', 'id_walikelas');
+    }
 }

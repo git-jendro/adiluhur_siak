@@ -96,7 +96,7 @@ function updateNilai(id) {
         success : function(res) {
             $.each(res, function (i, item) {
                 console.log(item.nilai);
-                $('#nilai'+id).html('<td id="nilai'+item.id_jadwal+'" class="col-sm-1">'+item.nilai+'</td>');
+                $('#nilai'+id).html('<td id="nilai'+item.id_jadwal+''" class="col-sm-1">'+item.nilai+'</td>');
             })
         }
     })

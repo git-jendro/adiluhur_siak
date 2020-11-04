@@ -161,3 +161,10 @@ Route::get('/nilai', 'NilaiController@index');
 Route::get('/nilai/{id_jadwal}', 'NilaiController@edit');
 Route::get('/nilai/update/{id}/{tugas}/{uts}/{uas}', 'NilaiController@nilai');
 
+// Route Laporan Nilai;
+Route::get('/laporan_nilai', 'LaporanNilaiController@index');
+Route::get('/laporan_nilai/kepsek_lihat', 'LaporanNilaiController@index');
+Route::get('/laporan_nilai/{nis}', 'LaporanNilaiController@show');
+Route::get('/laporan_nilai/kelas/{jurusan}', 'LaporanNilaiController@kelas');
+Route::get('/laporan_nilai/siswa/{jurusan}', 'LaporanNilaiController@siswa');
+
