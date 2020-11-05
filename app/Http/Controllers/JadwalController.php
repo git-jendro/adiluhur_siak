@@ -230,14 +230,38 @@ class JadwalController extends DashboardBaseController
         return response()->json($data);
     }
 
-    public function jam($jam, $id)
+    public function jam($jam, $id, $guru, $ruangan, $hari)
     {
-        $data = Jadwal::where('id_jadwal', $id)
+        $data = Jadwal::all();
+        $count = Jadwal::where([
+            ['id_guru', $guru],
+            ['kd_ruangan', $ruangan],
+            ['hari', $hari],
+            ['jam', $jam]
+        ])->count();
+
+        if ($count > 1) {
+            return response()->json([
+                'con' => 'gagal',
+                'count' => $count,
+                'data' => $data
+                ]);
+        }else{
+            Jadwal::where('id_jadwal', $id)
         ->update([
             'jam' => $jam
         ]);
-
-        return response()->json($data);
+        }
+        
+        return response()->json([
+                'con' => 'success',
+                'count' => $count,
+                'data' => $data,
+                'guru' => $guru,
+                'ruangan' => $ruangan,
+                'hari' => $hari,
+                ]);
+        // }
     }
 
 }

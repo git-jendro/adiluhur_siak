@@ -141,7 +141,7 @@ Route::get('/jadwal/mapel/{tingkatan}/{kelas}', 'JadwalController@mapel');
 Route::get('/jadwal/guru/{guru}/{id}', 'JadwalController@guru');
 Route::get('/jadwal/ruangan/{ruangan}/{id}', 'JadwalController@ruangan');
 Route::get('/jadwal/hari/{hari}/{id}', 'JadwalController@hari');
-Route::get('/jadwal/jam/{jam}/{id}', 'JadwalController@jam');
+Route::get('/jadwal/jam/{jam}/{id}/{guru}/{ruangan}/{hari}', 'JadwalController@jam');
 Route::get('/jadwal/{id_jadwal}/delete', 'JadwalController@destroy');
 
 // Route Walikelas;
