@@ -28,6 +28,8 @@ Route::get('/siswa/{nis}', 'SiswaController@show');
 Route::get('/siswa/{nis}/edit', 'SiswaController@edit');
 Route::delete('/siswa/{nis}', 'SiswaController@destroy');
 Route::patch('/siswa/{nis}', 'SiswaController@update');
+Route::get('/siswa/kelas/{kelas}', 'SiswaController@kelas');
+
 
 // Route Guru;
 Route::get('/guru', 'GuruController@index');

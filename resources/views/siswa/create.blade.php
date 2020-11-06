@@ -162,7 +162,7 @@
                         <label class="col-sm-2 control-label">Kelas Awal</label>
 
                         <div class="col-sm-5">
-                            <select name="kd_kelas" class="form-control" required>
+                            <select id="kelas" name="kd_kelas" class="form-control" onchange="check()" required>
                                 <option value="">Pilih Kelas</option>
                                 <option value="IPAX1">X IPA 1</option>
                                 <option value="IPAX2">X IPA 2</option>
@@ -253,5 +253,20 @@
       });
     
     });
+
+    function check()
+    {
+        var kelas = $("#kelas").val();
+        $.ajax({
+            type : 'GET',
+            url : 'http://localhost:8000/siswa/kelas/'+kelas,
+            success : function(res) {
+                console.log(res);
+                if (res == 'false') {
+                    alert("Kelas Penuh");
+                }
+                }
+        })
+    }
 </script>
 @endsection

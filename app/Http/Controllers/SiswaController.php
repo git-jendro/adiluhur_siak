@@ -151,11 +151,15 @@ class SiswaController extends DashboardBaseController
         return view('/siswa/aktif', compact('sql_menu', 'menu', 'siswa', 'jurusan'));
     }
 
-    public function kelas($jurusan)
+    public function kelas($kelas)
     {
-        // $kelas = Kelas::where('kd_jurusan', $kd_jurusan)->get();
+        $count = Siswa::where('kd_kelas', $kelas)->count();
 
-        return response()->json('Helo');
+        if ($count > 35) {
+            return response()->json('false');
+        }
+
+        return response()->json($count);
     }
 
     public function validateRequest()
@@ -195,5 +199,6 @@ class SiswaController extends DashboardBaseController
             ]);
         }
     }
+    
 
 }
