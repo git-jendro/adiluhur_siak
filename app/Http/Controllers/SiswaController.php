@@ -47,15 +47,9 @@ class SiswaController extends DashboardBaseController
     {
         $menu = $this->view[0]->menu;
         $sql_menu = $this->view[0]->sql_menu;
-        $kelas = kelas::all();
-        foreach ($kelas as $key ) {
-            $class = Kelas::select('kd_ruangan')->where('kd_kelas', $kelas);
-            $sql = Ruangan::whereHas('kelas', function ($query) use ($class) {
-            $query->whereIn('kd_ruangan', $class);
-            })->get();
-    
-            return view('/siswa/create', compact('sql_menu', 'menu'));
-        }
+
+
+        return view('/siswa/create', compact('sql_menu', 'menu'));
     }
 
     /**
@@ -172,7 +166,7 @@ class SiswaController extends DashboardBaseController
             }
         }
 
-        return response()->json($sql);
+        return response()->json($count);
     }
 
     public function validateRequest()
