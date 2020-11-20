@@ -40,7 +40,8 @@ class LaporanNilaiController extends DashboardBaseController
         
         if ($walikelas != null) {
             $siswa = Siswa::where('kd_kelas', $walikelas->kd_kelas)->get();
-            return view('/laporan_nilai/index', compact('sql_menu', 'menu', 'tahun', 'walikelas', 'siswa'));
+            $kelas = Kelas::all();
+            return view('/laporan_nilai/index', compact('sql_menu', 'menu', 'tahun', 'walikelas', 'siswa', 'kelas'));
         }
 
         return view('/laporan_nilai/index', compact('sql_menu', 'menu', 'tahun'));

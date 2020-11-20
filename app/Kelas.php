@@ -42,5 +42,8 @@ class Kelas extends Model
     public function walikelas(){
         return $this->hasMany('App\Walikelas');
     }
-    
+    public function ruangan()
+    {
+        return $this->belongsTo('App\Ruangan', 'kd_ruangan', 'kd_ruangan');
+    }   
 }

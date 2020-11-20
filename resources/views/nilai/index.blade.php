@@ -44,7 +44,7 @@ Data Pelajaran |
                             <th></th>
                         </tr>
                     </thead>
-
+                    
                     <tbody>
                         @foreach ($jadwal as $j)
                         <tr>

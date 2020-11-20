@@ -21,5 +21,10 @@ class Ruangan extends Model
     public function jadwal(){
         return $this->hasMany('App\Jadwal');
     }
+
+    public function kelas()
+    {
+        return $this->hasMany('App\Kelas', 'kd_ruangan');
+    }
     
 }

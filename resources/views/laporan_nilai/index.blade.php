@@ -1,6 +1,6 @@
 @extends('layouts/navbar')
 @section('title')
-Data Pelajaran | 
+Data Pelajaran |
 @endsection
 @section('content')
 <div class="row">
@@ -21,9 +21,10 @@ Data Pelajaran |
                     <tr>
                         <th>
                             Jurusan
-                        </th> 
+                        </th>
                         <th>
-                            <select onchange="handleChange()" name="kd_jurusan" class="form-control" id="filter_jurusan">
+                            <select onchange="handleChange()" name="kd_jurusan" class="form-control"
+                                id="filter_jurusan">
                                 <option value="">Pilih Jurusan</option>
                                 @foreach ($jurusan as $j)
                                 <option value="{{$j->kd_jurusan}}">{{$j->nama_jurusan}}</option>
@@ -41,14 +42,14 @@ Data Pelajaran |
                         </th>
                     </tr>
                     @elseif($walikelas != null)
-                        <tr>
-                            <th>
-                                Jurusan & Tingkatan
-                            </th>
-                            <th>
-                                : Jurusan {{$walikelas->jurusan->nama_jurusan}} ({{$walikelas->kelas->nama_kelas}})
-                            </th>
-                        </tr>
+                    <tr>
+                        <th>
+                            Jurusan & Tingkatan
+                        </th>
+                        <th>
+                            : Jurusan {{$walikelas->jurusan->nama_jurusan}} ({{$walikelas->kelas->nama_kelas}})
+                        </th>
+                    </tr>
                     @endif
                 </table>
             </div>
@@ -75,7 +76,7 @@ Data Pelajaran |
                             <th class="text-center">AKSI</th>
                         </tr>
                     </thead>
- 
+
                     <tbody>
                         @if ($walikelas != null)
                         @foreach ($siswa as $s)
@@ -83,13 +84,37 @@ Data Pelajaran |
                             <td class="text-center col-sm-1">{{$s->nis}}</td>
                             <td> {{$s->nama}} </td>
                             <td class="text-center col-sm-2">{{$s->status_siswa}}</td>
+                            <td class="text-center col-sm-2">
+                                {{-- {{$s->kelas->kd_tingkatan}} --}}
+                                <select name="kd_kelas" id="kelas-{{$s->nis}}" class="form-control"
+                                    onchange="kelas({{$s->nis}})">
+                                    <option value="">Naik Ke Kelas</option>
+                                    {{-- @php
+                                        $nkelas = $k->where([
+                                            'kd_kelas', $s->kelas->kd_tingkatan,
+                                            'kd_jurusan', $s->kelas->kd_jurusan
+                                        ])->get();
+                                        foreach ($nkelas as $row) {
+                                            ''
+                                        }
+                                    @endphp --}}
+                                    @foreach ($cond = $kelas->where([
+                                    ['kelas' => 'kd_tingkatan', '=', $s->kelas->kd_tingkatan],
+                                    ['kelas' => 'kd_jurusan', '=', $s->kelas->kd_jurusan]
+                                    ])->get() as $item)
+                                    {{dd($item)}}
+                                    <option value="{{$item->kd_kelas}}">{{$item->nama_kelas}}</option>
+                                    <option value=""></option>
+                                    @endforeach
+                                </select>
+                            </td>
                             <td class="text-center col-sm-1">
                                 <a href="/laporan_nilai/{{$s->nis}}"><i class="fa fa-eye" aria-hidden="true"></i></a>
                             </td>
+
                             <td class="text-center col-sm-2">
                                 @if (Auth::user()->id_level_user == 6)
-                                    <a href="#" class="btn btn-xs bg-orange"
-                                        data-placement="top">Setujui</a>
+                                <a href="#" class="btn btn-xs bg-orange" data-placement="top">Setujui</a>
                                 @else
                                 <a href="#" class="btn btn-sm btn-danger">
                                     Cetak Laporan Nilai
@@ -137,6 +162,25 @@ Data Pelajaran |
         var kelas = $("#cbkelas").val();
         $('#mytable').html('<table class="table lists"><th class="text-center">NIS</th><th class="text-center">NAMA </th><th class="text-center">STATUS SISWA</th><th class="text-center">LIHAT NILAI</th><th class="text-center">AKSI</th></table>');
             $.ajax({
+                type : 'GET',
+                url : 'http://localhost:8000/laporan_nilai/siswa/'+kelas,
+                success : function(res) {
+                    $.each(res, function(i, item){
+                    try {
+                    $('.lists').append('<tr><td>'+item.nis+'</td><td>'+item.nama+'</td><td>'+item.jenis_kelamin+'</td></tr>');
+                    } catch (error) {
+                    console.log(error);
+                    }
+                    })
+                // console.log(res);
+            }
+        })
+    }
+
+    function kelas(kelas)
+    {
+        var kelas = $("#cbkelas").val();
+        $.ajax({
                 type : 'GET',
                 url : 'http://localhost:8000/laporan_nilai/siswa/'+kelas,
                 success : function(res) {

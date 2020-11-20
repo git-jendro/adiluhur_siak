@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jurusan;
 use App\Kelas;
+use App\Ruangan;
 use App\Siswa;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,8 +47,15 @@ class SiswaController extends DashboardBaseController
     {
         $menu = $this->view[0]->menu;
         $sql_menu = $this->view[0]->sql_menu;
-
-        return view('/siswa/create', compact('sql_menu', 'menu'));
+        $kelas = kelas::all();
+        foreach ($kelas as $key ) {
+            $class = Kelas::select('kd_ruangan')->where('kd_kelas', $kelas);
+            $sql = Ruangan::whereHas('kelas', function ($query) use ($class) {
+            $query->whereIn('kd_ruangan', $class);
+            })->get();
+    
+            return view('/siswa/create', compact('sql_menu', 'menu'));
+        }
     }
 
     /**
@@ -154,12 +162,17 @@ class SiswaController extends DashboardBaseController
     public function kelas($kelas)
     {
         $count = Siswa::where('kd_kelas', $kelas)->count();
-
-        if ($count > 35) {
-            return response()->json('false');
+        $class = Kelas::select('kd_ruangan')->where('kd_kelas', $kelas);
+        $sql = Ruangan::whereHas('kelas', function ($query) use ($class) {
+        $query->whereIn('kd_ruangan', $class);
+        })->get();
+        foreach ($sql as $key ) {
+            if ($count == $key->kapasitas) {
+                return response()->json('false');
+            }
         }
 
-        return response()->json($count);
+        return response()->json($sql);
     }
 
     public function validateRequest()
