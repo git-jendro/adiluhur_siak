@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2021 at 01:51 PM
+-- Generation Time: Jan 07, 2021 at 01:56 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -1297,58 +1297,6 @@ INSERT INTO `users` (`id`, `nama_lengkap`, `email`, `email_verified_at`, `passwo
 (16, 'Keuangan', 'keuangan@gmail.com', NULL, '$2y$10$3voBftYMQ8vhB2.EG2xHYOlRDn87kIHy4JngVQBr9VNS8lcf8XSUa', 4, NULL, NULL, NULL, '2020-10-27 02:42:15'),
 (17, 'Anak Baru', 'anakbaru@gmail.com', NULL, '$2y$10$tYTN59CuIFjlJzUcQIGGU.8S9.mN4iYAcZUwf1PTYkOoZvkwNkwfa', 4, 'Siswa/6ZOlBxob5gItXpvo9F3FHxesQMXilsMU5R9NAOoM.jpeg', NULL, '2020-10-27 01:54:35', '2020-10-28 00:53:54'),
 (18, 'Walikelas', 'walikelas@gmail.com', NULL, '$2y$10$7Bz/r3lczhGJ3/TMzUX02.CfwpL5o6r.NkoL/sBaUS2bH9fDQHIEi', 3, NULL, NULL, '2020-11-21 23:36:58', '2020-11-21 23:36:58');
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `view_kelas`
--- (See below for the actual view)
---
-CREATE TABLE `view_kelas` (
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `view_user`
--- (See below for the actual view)
---
-CREATE TABLE `view_user` (
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `view_walikelas`
--- (See below for the actual view)
---
-CREATE TABLE `view_walikelas` (
-);
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_kelas`
---
-DROP TABLE IF EXISTS `view_kelas`;
--- Error reading structure for table skr_nita2.view_kelas: #1267 - Illegal mix of collations (utf8mb4_general_ci,IMPLICIT) and (utf8mb4_unicode_ci,IMPLICIT) for operation '='
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_user`
---
-DROP TABLE IF EXISTS `view_user`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `view_user`  AS  select `tu`.`id_user` AS `id_user`,`tu`.`nama_lengkap` AS `nama_lengkap`,`tu`.`username` AS `username`,`tu`.`password` AS `password`,`tu`.`id_level_user` AS `id_level_user`,`tu`.`foto` AS `foto`,`tlu`.`nama_level` AS `nama_level` from (`tbl_user` `tu` join `tbl_level_user` `tlu`) where `tu`.`id_level_user` = `tlu`.`id_level_user` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `view_walikelas`
---
-DROP TABLE IF EXISTS `view_walikelas`;
--- Error reading structure for table skr_nita2.view_walikelas: #1267 - Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_general_ci,IMPLICIT) for operation '='
 
 --
 -- Indexes for dumped tables
