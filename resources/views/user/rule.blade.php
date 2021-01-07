@@ -54,18 +54,17 @@ Rule
                             <th>LINK</th>
                             <th>HAK AKSES</th>
                         </thead>
-                        <tbody>
+                        <tbody id="tbody">
                             @foreach ($modul as $m)
                             <tr>
-                                <td><input id="id_menu" value="{{$m->id}}" type="hidden">{{$m->id}}</td>
+                                <td>{{$m->id}}</td>
                                 <td>
                                     {{$m->nama_menu}}
                                 </td>
                                 <td>{{$m->link}}</td>
 
                                 <td id="check" class="text-center">
-                                    <input class="id_check" type="checkbox" {{-- @foreach ($count as $c)
-                                        {{$c->id == $m->id ? 'checked' : ''}} @endforeach --}}>
+                                    <input class="id_check({{$m->id}})" type="checkbox">
                                 </td>
                             </tr>
                             @endforeach
@@ -86,26 +85,42 @@ Rule
     function handleChange()
     {
     var level = $("#filter_level").val();
-    $('#mytable').html('<table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="100%"><thead><th>NO</th><th>NAMA MODUL</th><th>LINK</th><th>HAK AKSES</th></thead></table>');
+    $('#tbody').html('');
     $.ajax({
         type : 'GET',
         url : 'http://localhost:8000/user/rule/'+level,
         success : function(res) {
-            $.each(res.count, function(c, count){
-                    try {
-                        $.each(res.menu, function (m, menu) {
-                        $('#mytable').append('<tbody><tr><td>'+menu.id+'</td><td>'+menu.nama_menu+'</td><td>'+menu.link+'</td><td id="check" class="text-center"><input type="checkbox" class="check"></td></tr></tbody>');
-                                if (menu.id == count.id) {
-                                    console.log(count.id);
-                                    $('#check').html('<input type="checkbox" checked>');
-                                }
-                        })
-                    } catch (error){
-                        console.log(error);
+                $.each(res.modul, function(mkey, vm) {
+                    var id = vm.id 
+                    var count = 0;
+                    $('#tbody').append('<tr id="' + vm.id + '"><td>' + vm.id + '</td><td>' + vm.nama_menu + '</td><td>' + vm.link + '</td></tr>');
+                    $.each(res.count, function(ckey, vc) {
+                    if (id == vc.id) {
+                        $('#' + id).append('<td id=""><input id="id_check(' + id + ')" onchange="uprule('+ id +')" type="checkbox" checked></td>');
+                        count = 1;
+                        return false;
                     }
-                })
-                // console.log(res.menu)
+                    });
+                    if (count == 0) {
+                    $('#' + id).append('<td><input id="id_check(' + id + ')" onchange="uprule('+ id +')" type="checkbox"></td>');
+                    }
+                });  
             }
-        })
+        });
     }
+
+    function uprule(id)
+    {
+    var level = $("#filter_level").val();
+
+    $.ajax({
+        type : 'GET',
+        url : 'http://localhost:8000/user/uprule/'+level+'/'+id,
+        success : function(res) {
+                console.log(res)
+                 
+            }
+        });
+    }
+    
 </script>

@@ -169,31 +169,45 @@ class UserController extends DashboardBaseController
         $sql_menu = $this->view[0]->sql_menu;
         $level = LevelUser::all();
         $modul = Menu::select('id', 'nama_menu', 'link')->with('rule')->get();
-        $collection = UserRule::select('id_menu')->where('id_level_user', 1);
-        $count = $menu->whereHas('rule', function ($query) use ($collection) {
-            $query->whereIn('id', $collection);
-        })->get();
 
-        return view('/user/rule', compact('sql_menu', 'menu', 'level', 'modul', 'count'));
+        return view('/user/rule', compact('sql_menu', 'menu', 'level', 'modul'));
     }
 
     public function level($level)
     {
-        // $rule = UserRule::select('id_menu')->where('id_level_user', $level);
-        // $check = Menu::whereHas('rule', function ($query) use ($rule) {
-        // $query->whereIn('id', $rule);
-        // })->get();
-        // $modul = Menu::select('id', 'nama_menu', 'link')->with('rule')->get();
-
-        $menu = Menu::all();
+        $modul = Menu::select('id', 'nama_menu', 'link')->get();
         $collection = UserRule::select('id_menu')->where('id_level_user', $level);
         $count = Menu::whereHas('rule', function ($query) use ($collection) {
             $query->whereIn('id', $collection);
-        })->get();
+        })->select('id')->get();
 
         return response()->json([
-            'menu'  => $menu,
+            'modul'  => $modul,
             'count' => $count
         ]);
+    }
+
+    public function uprule($level, $id)
+    {
+        $rule = UserRule::select()->where([
+            ['id_level_user', $level],
+            ['id_menu', $id]
+        ])->first();
+        if (UserRule::where([
+                ['id_level_user', $level],
+                ['id_menu', $id]
+            ])->exists()) {
+                UserRule::where([
+                ['id_level_user', $level],
+                ['id_menu', $id]
+            ])->delete();
+            return response()->json('Ada');
+        }
+        UserRule::create([
+                'id_level_user' => $level,
+                'id_menu' => $id
+            ]);
+        return response()->json('Kosong');
+
     }
 }

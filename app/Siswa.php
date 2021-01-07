@@ -39,4 +39,9 @@ class Siswa extends Model
     {
         return $this->belongsTo('App\Walikelas', 'id_walikelas', 'id_walikelas');
     }
+
+    public function riwayat()
+    {
+        return $this->hasMany('App\Riwayat', 'id_riwayat');
+    }
 }

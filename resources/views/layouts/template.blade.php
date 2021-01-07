@@ -41,10 +41,11 @@
         <script src="{{asset('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
         <!-- Google Font -->
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
-
-        <!-- Modal -->
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        {{-- Print JS --}}
+        <script src="{{asset('printjs/print.min.css') }}" type="text/javascript"></script>
 
     </head>
 
@@ -58,6 +59,7 @@
             <div class="wrapper">
                 @yield('navbar')
             </div>
+                @yield('print')
             @endguest
 
 
@@ -79,6 +81,8 @@
             <script src="{{ asset('dist/js/pages/dashboard2.js') }}"></script>
             <!-- AdminLTE for demo purposes -->
             <script src="{{ asset('dist/js/demo.js') }}"></script>
+            {{-- Print JS --}}
+            <script src="{{ asset('printjs/print.min.css') }}"></script>
 
         </body>
 

@@ -7,6 +7,7 @@ use App\Jadwal;
 use App\Nilai;
 use App\Siswa;
 use App\TahunAkademik;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -121,5 +122,16 @@ class NilaiController extends DashboardBaseController
         $nilai = Nilai::where('id_nilai', $id)->get();
         
         return response()->json($nilai);
+    }
+
+    public function print($nis)
+    {
+        $tahun = TahunAkademik::where('is_aktif', 'Y')->first();
+        $siswa = Siswa::where('nis', $nis)->first();
+        $nilai = Nilai::where('nis', $nis)->get();
+
+        $pdf = PDF::loadview('nilai/print', compact('nilai', 'siswa', 'tahun'));
+    	return $pdf->download('laporan-nilai-pdf');
+        // return view('nilai/print', compact('nilai', 'siswa', 'tahun'));
     }
 }

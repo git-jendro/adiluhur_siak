@@ -91,8 +91,7 @@ class JadwalController extends DashboardBaseController
                 ['kd_tingkatan', $k->kd_tingkatan],
             ])->first();
 
-            $jadwal = new Jadwal;
-
+            $jadwal = new Jadwal;   
             $jadwal->id_tahun_akademik   = $tahun->id_tahun_akademik;
             $jadwal->semester	    = $request->semester;
             $jadwal->kd_jurusan	    = $k->kd_jurusan;

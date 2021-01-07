@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Kelas;
+use App\Riwayat;
+use App\Siswa;
 use App\TahunAkademik;
 use App\Walikelas;
 use Illuminate\Http\Request;
@@ -58,13 +60,21 @@ class TahunAkademikController extends DashboardBaseController
         
         $kelas = Kelas::all();
         foreach ($kelas as $k) {
-            Walikelas::create([
-                'id_guru'           => 0,
-                'id_tahun_akademik'	=> $store->id_tahun_akademik,
-                'kd_kelas'		    => $k->kd_kelas,
-                'kd_jurusan'        => $k->kd_jurusan,
-                'kd_tingkatan'        => $k->kd_tingkatan,
-             ]);
+            $walikelas = new Walikelas;
+            $walikelas->id_guru = 0;
+            $walikelas->id_tahun_akademik = $store->id_tahun_akademik;
+            $walikelas->kd_kelas = $k->kd_kelas;
+            $walikelas->kd_jurusan = $k->kd_jurusan;
+            $walikelas->kd_tingkatan = $k->kd_tingkatan;
+            $walikelas->save();
+            
+            $siswa = Siswa::where('kd_kelas', $walikelas->kd_kelas)->get();
+            foreach ($siswa as $key) {
+                $riwayat = new Riwayat;
+                $riwayat->id_walikelas = $walikelas->id_walikelas;
+                $riwayat->nis = $key->nis;
+                $riwayat->save();
+            }
         }
 
         return redirect()->action('TahunAkademikController@index')->with('store', 'Data Tahun Akademik Berhasil Ditambahakan');
@@ -129,19 +139,9 @@ class TahunAkademikController extends DashboardBaseController
 
     public function aktif($id_tahun_akademik)
     {
-        // dd($id_tahun_akademik);
-        // TahunAkademik::where([
-        //     ['is_aktif'== 'Aktif'],
-        //     ['id_tahun_akademik', $id_tahun_akademik]
-        //     ])
-        //     ->orWhere('id_tahun_akademik', $id_tahun_akademik)
-        //     ->update(['is_aktif'== 'N']);
-
-            DB::update('update tbl_tahun_akademik set is_aktif = "N" where is_aktif = "Y"');
-            DB::update('update tbl_tahun_akademik set is_aktif = "Y" where id_tahun_akademik ='.$id_tahun_akademik);
-            
+        DB::update('update tbl_tahun_akademik set is_aktif = "N" where is_aktif = "Y"');
+        DB::update('update tbl_tahun_akademik set is_aktif = "Y" where id_tahun_akademik ='.$id_tahun_akademik);
+        
         return redirect()->action('TahunAkademikController@index');
-
-
     }
 }

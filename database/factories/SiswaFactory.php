@@ -21,7 +21,7 @@ $factory->define(Siswa::class, function (Faker $faker) {
         'no_ijazah' => $faker->randomDigit(5),
         'sekolah_asal' => $faker->word,
         'kd_agama' => $faker->randomDigitNot(0),
-        'kd_kelas' => 'IPAX1',
+        'kd_kelas' => 'IPAXI1',
         'status_siswa' => 'aktif',
         'email' => $faker->freeEmailDomain,
         'password' => '123123',

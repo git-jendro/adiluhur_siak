@@ -109,6 +109,7 @@ Route::get('/user/create', 'UserController@create');
 Route::post('/user/store', 'UserController@store');
 Route::get('/user/rule', 'UserController@rule');
 Route::get('/user/rule/{level}', 'UserController@level');
+Route::get('/user/uprule/{level}/{id}', 'UserController@uprule');
 Route::get('/user/{id}/edit', 'UserController@edit');
 Route::delete('/user/{id}', 'UserController@destroy');
 Route::patch('/user/{id}', 'UserController@update');
@@ -149,6 +150,7 @@ Route::get('/jadwal/{id_jadwal}/delete', 'JadwalController@destroy');
 // Route Walikelas;
 Route::get('/walikelas', 'WalikelasController@index');
 Route::get('/walikelas/{guru}/{id}', 'WalikelasController@guru');
+Route::get('/walikelas/{wali}', 'WalikelasController@riwayat');
 
 // Route Menu;
 Route::get('/menu', 'MenuController@index');
@@ -162,11 +164,14 @@ Route::patch('/menu/{id}', 'MenuController@update');
 Route::get('/nilai', 'NilaiController@index');
 Route::get('/nilai/{id_jadwal}', 'NilaiController@edit');
 Route::get('/nilai/update/{id}/{tugas}/{uts}/{uas}', 'NilaiController@nilai');
+Route::get('/nilai/print/{nis}', 'NilaiController@print');
 
 // Route Laporan Nilai;
 Route::get('/laporan_nilai', 'LaporanNilaiController@index');
 Route::get('/laporan_nilai/kepsek_lihat', 'LaporanNilaiController@index');
+Route::get('/laporan_nilai/riwayat', 'LaporanNilaiController@riwayat');
+Route::get('/laporan_nilai/nilai/{nilai}', 'LaporanNilaiController@nilai');
 Route::get('/laporan_nilai/{nis}', 'LaporanNilaiController@show');
 Route::get('/laporan_nilai/kelas/{jurusan}', 'LaporanNilaiController@kelas');
 Route::get('/laporan_nilai/siswa/{jurusan}', 'LaporanNilaiController@siswa');
-
+Route::get('/laporan_nilai/naik/{id}', 'LaporanNilaiController@naik');

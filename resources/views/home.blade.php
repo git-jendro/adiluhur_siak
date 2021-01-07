@@ -3,6 +3,7 @@
 @section('content')
 <!-- Small boxes (Stat box) -->
 <div class="row">
+    {{-- {{Auth::user()->id_level_user}} --}}
     <div class="col-lg-6 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-aqua">

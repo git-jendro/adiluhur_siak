@@ -56,9 +56,9 @@ Wali Kelas |
                             </td>
                             <td>
                                 {{$w->tingkatan->nama_tingkatan}}
-                            </td>
+                            </td> 
                             <td>
-                                <select id="guru" name="id_guru" class="form-control guru"
+                                <select id="guru{{$w->id_walikelas}}" name="id_guru" class="form-control guru"
                                     onChange="updateGuru({{$w->id_walikelas}})">
                                     <option value="{{$w->id_guru}}">{{$w->guru->nama_guru}}</option>
                                     @foreach ($guru as $g)
@@ -101,7 +101,7 @@ Wali Kelas |
 <script>
     function updateGuru(id)
     {
-    var guru = $(".guru").val();
+    var guru = $("#guru"+id).val();
     $.ajax({
         type : 'GET',
         url : 'http://localhost:8000/walikelas/'+guru+'/'+id,

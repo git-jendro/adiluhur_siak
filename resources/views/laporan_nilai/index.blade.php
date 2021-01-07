@@ -73,54 +73,39 @@ Data Pelajaran |
                             <th class="text-center">NAMA </th>
                             <th class="text-center">STATUS SISWA</th>
                             <th class="text-center">LIHAT NILAI</th>
+                            @if (Auth::user()->id_level_user == 6)
+                                
                             <th class="text-center">AKSI</th>
+                            @else
+                            <th class="text-center" colspan="2">AKSI</th>
+                                
+                            @endif
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="tbody"> 
                         @if ($walikelas != null)
                         @foreach ($siswa as $s)
                         <tr>
                             <td class="text-center col-sm-1">{{$s->nis}}</td>
                             <td> {{$s->nama}} </td>
                             <td class="text-center col-sm-2">{{$s->status_siswa}}</td>
-                            <td class="text-center col-sm-2">
-                                {{-- {{$s->kelas->kd_tingkatan}} --}}
-                                <select name="kd_kelas" id="kelas-{{$s->nis}}" class="form-control"
-                                    onchange="kelas({{$s->nis}})">
-                                    <option value="">Naik Ke Kelas</option>
-                                    {{-- @php
-                                        $nkelas = $k->where([
-                                            'kd_kelas', $s->kelas->kd_tingkatan,
-                                            'kd_jurusan', $s->kelas->kd_jurusan
-                                        ])->get();
-                                        foreach ($nkelas as $row) {
-                                            ''
-                                        }
-                                    @endphp --}}
-                                    @foreach ($cond = $kelas->where([
-                                    ['kelas' => 'kd_tingkatan', '=', $s->kelas->kd_tingkatan],
-                                    ['kelas' => 'kd_jurusan', '=', $s->kelas->kd_jurusan]
-                                    ])->get() as $item)
-                                    {{dd($item)}}
-                                    <option value="{{$item->kd_kelas}}">{{$item->nama_kelas}}</option>
-                                    <option value=""></option>
-                                    @endforeach
-                                </select>
-                            </td>
                             <td class="text-center col-sm-1">
                                 <a href="/laporan_nilai/{{$s->nis}}"><i class="fa fa-eye" aria-hidden="true"></i></a>
                             </td>
 
+                            @if (Auth::user()->id_level_user == 6)
                             <td class="text-center col-sm-2">
-                                @if (Auth::user()->id_level_user == 6)
                                 <a href="#" class="btn btn-xs bg-orange" data-placement="top">Setujui</a>
-                                @else
-                                <a href="#" class="btn btn-sm btn-danger">
-                                    Cetak Laporan Nilai
-                                </a>
-                                @endif
                             </td>
+                            @else
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-success" onclick="naik({{$s->nis}})" {{$s->kelas->kd_tingkatan == 003 ? 'disabled' : ''}}>Naik Kelas</button>
+                            </td>
+                            <td class="text-center">
+                                <a href="/nilai/print/{{$s->nis}}" class="btn btn-primary">Cetak Laporan Nilai</a>
+                            </td>
+                            @endif
                         </tr>
                         @endforeach
                         @endif
@@ -136,7 +121,12 @@ Data Pelajaran |
     <!-- /.col -->
 </div>
 <!-- /.row -->
+<!-- Button trigger modal -->
+
 @endsection
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{{ asset('printjs/print.min.css') }}"></script>
 <script>
     function handleChange()
     {
@@ -191,8 +181,31 @@ Data Pelajaran |
                     console.log(error);
                     }
                     })
-                // console.log(res);
             }
         })
     }
+
+    function naik(id) {
+        $.ajax({
+            type : 'GET',
+            url : 'http://localhost:8000/laporan_nilai/naik/'+id,
+            success : function(res) {
+                console.log(res);
+                if (res == 'penuh') {
+                    alert('Kelas Penuh, Harap Buat Data Kelas Baru');
+                }
+                alert('Siswa bernama '+res.siswa+' telah naik ke kelas '+res.kd);
+                $('#tbody').html('');
+                $.each(res.siswa2, function(i, item){
+                    try {
+                        $('#tbody').append('<tr><td class="text-center col-sm-1">'+item.nis+'</td><td> '+item.nama+' </td><td class="text-center col-sm-2">'+item.status_siswa+'</td><td class="text-center col-sm-1"><a href="/laporan_nilai/'+item.nis+'"><i class="fa fa-eye" aria-hidden="true"></i></a></td><td class="text-center"><button type="button" class="btn btn-sm btn-success" onclick="naik('+item.nis+')">Naik Kelas</button></td><td class="text-center"><button type="button" class="btn btn-sm btn-primary" onclick="cetak('+item.nis+')">Cetak Laporan Nilai</button></td></tr>');
+                    } catch (error) {
+                    console.log(error);
+                    }
+                })
+
+            }
+        })
+    }
+
 </script>

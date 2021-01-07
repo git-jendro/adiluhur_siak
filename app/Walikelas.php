@@ -43,4 +43,8 @@ class Walikelas extends Model
         return $this->hasMany('App\Siswa');
     }
     
+    public function riwayat()
+    {
+        return $this->hasMany('App\Riwayat', 'id_walikelas', 'id_walikelas');
+    }
 }
